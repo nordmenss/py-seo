@@ -8,13 +8,14 @@ class mem():
 		self.used_swap=None
 		self.console_output=None
 		self.run_freecolor()
+		self.parse()
 
 	def run_freecolor(self):
 	    self.console_output=os.popen('freecolor -m -o').read()
 
 	def parse(self):
 		lines=self.console_output.split("\n")
-		for line_i in range(2,3):
+		for line_i in range(1,2):
 			parts=lines[line_i].split(" ")
 			j=0
 			for part in parts:
