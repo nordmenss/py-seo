@@ -31,6 +31,6 @@ class mem():
 								self.total_swap=int(part)
 							if j==2:
 								self.used_swap=int(part)
-						j=+1
+				j=+1
 
 
