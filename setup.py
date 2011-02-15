@@ -3,7 +3,7 @@ from distutils.core import setup
 from html_blocks import VERSION
 import os
 import sys
-path='xpaginate'
+path='py_seo'
 
 packages, data_files = [], []
 root_dir = os.path.dirname(__file__)
@@ -35,11 +35,11 @@ for dirpath, dirnames, filenames in os.walk(path):
 
 setup(name=path,
       version=VERSION,
-      description='django paginate',
+      description='py-seo',
       long_description = open('README.txt').read(),
       author='NORD',
       author_email='nordmenss@gmail.com',
-      url='https://github.com/nordmenss/django-xpaginate',
+      url='https://github.com/nordmenss/py-seo',
       packages = packages,
       data_files = data_files,
       package_data={'': ['*.html']},
