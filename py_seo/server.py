@@ -6,14 +6,14 @@ class mem():
 		self.used_mem=None
 		self.total_swap=None
 		self.used_swap=None
-		self.output=None
+		self.console_output=None
 		self.run_freecolor()
 
-	def run_freecolor():
-	    self.output=os.popen('freecolor -m -o').read()
+	def run_freecolor(self):
+	    self.console_output=os.popen('freecolor -m -o').read()
 
 	def parse(self):
-		lines=self.output.split("\n")
+		lines=self.console_output.split("\n")
 		for line_i in range(2,3):
 			parts=lines[line_i].split(" ")
 			j=0
