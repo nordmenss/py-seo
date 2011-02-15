@@ -17,14 +17,12 @@ class mem():
 		lines=self.console_output.split("\n")
 		line_i=0
 		for line in lines:
-			print "line_i=",line_i
 			if line_i>0:
 				parts=line.split(" ")
 				j=0
 				for part in parts:
 					if j<3:
 						if part.strip()!='':
-							print "part=",part
 							if line_i==1:
 								if j==1:
 									self.total_mem=int(part)
@@ -35,8 +33,7 @@ class mem():
 									self.total_swap=int(part)
 								if j==2:
 									self.used_swap=int(part)
-					j=+1
-					print "j=",j
+					j+=1
 			line_i+=1
 
 
