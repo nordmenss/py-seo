@@ -15,22 +15,25 @@ class mem():
 
 	def parse(self):
 		lines=self.console_output.split("\n")
-		for line_i in range(1,2):
-			parts=lines[line_i].split(" ")
-			j=0
-			for part in parts:
-				if j<3:
-					if part.strip()!='':
-						if line_i==1:
-							if j==1:
-								self.total_mem=int(part)
-							if j==2:
-								self.used_mem=int(part)
-						if line_i==2:
-							if j==1:
-								self.total_swap=int(part)
-							if j==2:
-								self.used_swap=int(part)
-				j=+1
+		line_i=0
+		for line in lines:
+			if line_i>0:
+				parts=line.split(" ")
+				j=0
+				for part in parts:
+					if j<3:
+						if part.strip()!='':
+							if line_i==1:
+								if j==1:
+									self.total_mem=int(part)
+								if j==2:
+									self.used_mem=int(part)
+							if line_i==2:
+								if j==1:
+									self.total_swap=int(part)
+								if j==2:
+									self.used_swap=int(part)
+					j=+1
+			line_i+=1
 
 
