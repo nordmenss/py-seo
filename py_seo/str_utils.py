@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-import urllib,datetime,traceback,time,dateutil.parser
+import urllib,datetime,traceback,time
 
 def is_finded(text,substring):
 	return text.find(substring,0)>=0
@@ -91,14 +91,6 @@ def get_path(href):
 	else:
 		path='/'
 	return path
-
-
-def parse_date(str_value):
-	try:
-		d=dateutil.parser.parse(str_value)
-		return datetime.date(d.year,d.month,d.day)
-	except:
-		return get_date()
 
 def is_valid_date(date_str):
 	try:
