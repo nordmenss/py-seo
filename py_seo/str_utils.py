@@ -1,7 +1,5 @@
 from urlparse import urlparse
-import urllib,datetime,traceback,time,dateutil.parser,gzip
-from file_utils import *
-from StringIO import StringIO
+import urllib,datetime,traceback,time,dateutil.parser
 
 def is_finded(text,substring):
 	return text.find(substring,0)>=0
@@ -9,7 +7,26 @@ def is_finded(text,substring):
 def trim(str_value):
 	return str_value.strip()
 
+def is_trim(str_value):
+	return (str_value==trim(str_value))
+
+def is_lower(str_value):
+	return (str_value==str_value.lower())
+
+def is_english(str_value):
+	arr=['-','-']
+	for c in map(chr, range(97, 123)):
+		arr.append(c)
+	for c in map(chr, range(65, 91)):
+		arr.append(c)
+	for c in str_value:
+		if c not in arr:
+			return False
+	return True
+
 def decode_gzip(content):
+	from StringIO import StringIO
+	import gzip
 	buf = StringIO(content)
 	f = gzip.GzipFile(fileobj=buf)
 	data = f.read()
@@ -50,13 +67,6 @@ def explode(separator,string):
 def str_get_lines(value):
 	return explode("\n",value)
 
-def remove_bad_chars(value):
-    result=''
-    for s in value:
-    	if ord(s)!=187:
-     		result+=s
-    return result
-
 def get_url(url):
 	try:
 		page=urllib.urlopen(url)
@@ -77,14 +87,6 @@ def get_path(href):
 	else:
 		path='/'
 	return path
-
-def add_sql(total_sql,sql):
-	if len(sql)>0:
-		if len(total_sql)>0:
-			total_sql=total_sql+","+sql
-		else:
-			total_sql=sql
-	return total_sql
 
 
 def parse_date(str_value):

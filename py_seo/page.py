@@ -86,11 +86,3 @@ class Tpage(Thttp_page):
 
     def get_google_analytics_key(self):
         return self.google_analytics_key
-
-    def get_sql(self,domain_id):
-        values=[]
-        for key,value in self.metatags:
-            sql_value="('"+key+"','"+value+"')"
-            values.append(sql_value)
-        self.sql.append("SELECT add_domain_metatags("+str(domain_id)+",ARRAY["+implode(",",values)+"]::text_text[]);")
-

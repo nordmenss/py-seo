@@ -1,14 +1,11 @@
 import urllib2, httplib,sgmllib,socket,traceback
-from urlparse import urlparse
-from web_utils import *
-from file_utils import *
 from str_utils import *
 
-class Thttp_page(sgmllib.SGMLParser):
-    def __init__(self, conn:
-        sgmllib.SGMLParser.__init__(self, conn)
-        self.conn=conn
-        self.path=None
+class Tbase_page(sgmllib.SGMLParser):
+    def __init__(self):
+        sgmllib.SGMLParser.__init__(self,url)
+        self.url=url
+        self.conn=None
         self.text=None
         self.html=None
         self.response=None
@@ -44,37 +41,38 @@ class Thttp_page(sgmllib.SGMLParser):
         self.metadesc=None
         self.metakeys=None
 
-    def get(self, path):
+    def get(self):
         try:
             self.prepare()
-            self.conn.request("GET", path)
+            self.conn = httplib.HTTPConnection(get_host(self.url),timeout=10)
+            self.conn.request("GET", get_path(self.url))
             self.response = conn.getresponse()
             self.status=self.response.status
             self.response = conn.getresponse()
             if self.response.status in (301,302,):#REDIRECT
                 self.redirect_to=self.response.getheader('location', '')
-
-            if self.response.status==200:
-                self.headers=self.response.getheaders()
-                self.html=self.response.read()
-                if self.encoding!=None:
-                    html=decode_gzip(html)
-                if self.charset==None:
-                    self.html=html
-                    self.parse()
-                    self.parse_meta()
-                    self.prepare()
-                    self.html=html
-                else:
-                    self.html=html
-                if self.charset!=None:
-                    if self.charset.lower() not in ["utf-8","utf8"]:
-                        if self.charset!=None:
-                            self.html=self.html.decode(self.charset,"replace").encode('UTF8')
+            else:
+                if self.response.status==200:
+                    self.headers=self.response.getheaders()
+                    self.html=self.response.read()
+                    if self.encoding!=None:
+                        html=decode_gzip(html)
+                    if self.charset==None:
+                        self.html=html
+                        self.parse()
+                        self.parse_meta()
+                        self.prepare()
+                        self.html=html
                     else:
-                        self.html=self.html.decode('utf-8',"replace")
-                self.parse()
-            return (status==200)
+                        self.html=html
+                    if self.charset!=None:
+                        if self.charset.lower() not in ["utf-8","utf8"]:
+                            if self.charset!=None:
+                                self.html=self.html.decode(self.charset,"replace").encode('UTF8')
+                        else:
+                            self.html=self.html.decode('utf-8',"replace")
+                    self.parse()
+            return True
         except:
             traceback.print_exc(file=sys.stdout)
             return False
@@ -85,10 +83,10 @@ class Thttp_page(sgmllib.SGMLParser):
                 if is_finded(v,"charset=")==True:
                     parts=v.split(';')
                     if len(parts)==2:
-                        charset=trim(parts[1])
+                        charset=parts[1].strip()
                         parts=charset.split('=')
                         if len(parts)==2:
-                            self.charset=trim(parts[1])
+                            self.charset=parts[1].strip()
             if k.lower()=="content-encoding":
                 self.encoding=v
 
