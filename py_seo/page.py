@@ -1,4 +1,4 @@
-import urllib2, httplib,sgmllib,socket,traceback
+import httplib,sgmllib,socket,traceback
 from py_seo.str_utils import *
 
 def link_data(href,anchor_text,nofollow,is_img):
