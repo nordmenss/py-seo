@@ -1,5 +1,6 @@
-import httplib,sgmllib,socket,traceback
+import traceback
 from py_seo.str_utils import *
+from py_seo.base_page import *
 
 def link_data(href,anchor_text,nofollow,is_img):
     return [str(href),str(anchor_text),bool(nofollow),bool(is_img)]
