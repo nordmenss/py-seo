@@ -1,4 +1,5 @@
-import http.client,sgmllib,socket,traceback
+import urllib2, httplib,sgmllib,socket,traceback
+
 
 class Tbase_page(sgmllib.SGMLParser):
     def __init__(self):
