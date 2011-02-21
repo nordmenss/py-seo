@@ -1,4 +1,4 @@
-from urlparse import urlparse
+from urllib.parse import urlparse
 import urllib,datetime,traceback,time,dateutil.parser
 
 def is_finded(text,substring):
