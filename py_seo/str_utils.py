@@ -74,6 +74,10 @@ def get_url(url):
 	except:
 		return ''
 
+def get_scheme(href):
+	parse_object = urlparse(href)
+	return parse_object.scheme
+
 def get_host(href):
 	parse_object = urlparse(href)
 	return parse_object.netloc

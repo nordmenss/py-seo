@@ -1,53 +1,49 @@
 import urllib2, httplib,sgmllib,socket,traceback
-from urlparse import urlparse
-from web_utils import *
-from file_utils import *
-from str_utils import *
-from domain_class import *
+from py_seo.str_utils import *
 
-class Tpage(Thttp_page):
-    def __init__(self, domain,verbose=0):
-        sgmllib.SGMLParser.__init__(self)
-        self.url = None
+def link_data(href,anchor_text,nofollow,is_img):
+    return [str(href),str(anchor_text),bool(nofollow),bool(is_img)]
+
+class Tpage(Tbase_page):
+    def __init__(self,url):
+        sgmllib.SGMLParser.__init__(self,url)
         self.links=[]
         self.google_adsense_key=None
         self.google_analytics_key=None
-        self.link=dict()
-        self.sql=''
-
-    def init(self):
-        self.meta=[]
-        self.links=[]
-        self.google_adsense_key=None
-        self.google_analytics_key=None
-        self.link=dict()
+        self.is_http_link=False
+        self.href=None
+        self.anchor_text=None
+        self.nofollow=None
+        self.is_img=None
 
     def add_link(self):
         if len(self.links)<35000:
-            self.links.append(self.link)
-            self.link=dict()
+            self.links.append(link_data(self.href,self.anchor_text,self.nofollow,self.is_img))
 
     def start_a(self, attrs):
+        self.is_http_link=False
+        self.href=None
+        self.anchor_text=None
+        self.nofollow=None
+        self.is_img=None
         try:
             for key,value in attrs:
                 if key=="href":
-                    self.link['href']=value
-                    if is_finded(value,"http://"):
-                        if is_finded(get_host(value),self.domain)==False:
-                            self.link['external']=True
-                if key=="title":
-                    if trim(value)!="":
-                        self.link['title']=value
+                    self.href=value
+                    if get_scheme(value)=='http':
+                        self.is_http_link=True
+                        self.href=value
                 if key=="rel":
-                    if value=="nofollow":
-                        self.link['nofollow']=True
+                    if is_finded(value,"nofollow"):
+                        self.nofollow=True
         except:
             pass
 
     def end_a(self):
         try:
-            if self.text.strip()!="":
-                self.link['content']=self.text.strip()
+            if self.is_http_link==True:
+                if self.text.strip()!="":
+                    self.anchor_text=self.text.strip()
             self.add_link()
         except:
             pass
