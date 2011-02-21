@@ -2,11 +2,10 @@ import sgmllib,traceback
 from web_utils import *
 from str_utils import *
 
-def Tlink(url,title):
-    link=dict()
-    link['url']=url
-    link['title']=title
-    return link
+class Tlink():
+    def __init__(self, url,title):
+        self.url=url
+        self.title=title
 
 class Tbl_alexa(sgmllib.SGMLParser):
     def __init__(self, url):

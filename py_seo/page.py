@@ -5,7 +5,7 @@ from file_utils import *
 from str_utils import *
 from domain_class import *
 
-class Tbname_page(Thttp_page):
+class Tpage(Thttp_page):
     def __init__(self, domain,verbose=0):
         sgmllib.SGMLParser.__init__(self)
         self.url = None
