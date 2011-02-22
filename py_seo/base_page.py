@@ -1,9 +1,9 @@
-import urllib2, httplib,sgmllib,socket,traceback
+import traceback
+from html.parser import HTMLParser
 
-
-class Tbase_page(sgmllib.SGMLParser):
+class Tbase_page(HTMLParser):
     def __init__(self):
-        sgmllib.SGMLParser.__init__(self,url)
+        HTMLParser.__init__(self,url)
         self.url=url
         self.conn=None
         self.text=None
@@ -44,7 +44,7 @@ class Tbase_page(sgmllib.SGMLParser):
     def get(self):
         try:
             self.prepare()
-            self.conn = httplib.HTTPConnection(get_host(self.url),timeout=10)
+            self.conn = http.client.HTTPConnection(get_host(self.url),timeout=10)
             self.conn.request("GET", get_path(self.url))
             self.response = conn.getresponse()
             self.status=self.response.status
