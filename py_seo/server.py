@@ -1,11 +1,11 @@
 import os
 
-class mem():
+class memory():
 	def __init__(self):
-		self.total_mem=None
-		self.used_mem=None
-		self.total_swap=None
-		self.used_swap=None
+		self.memory_total_mb=None
+		self.memory_used_mb=None
+		self.swap_total_mb=None
+		self.swap_used_mb=None
 		self.console_output=None
 		self.run_freecolor()
 		self.parse()
@@ -25,14 +25,14 @@ class mem():
 						if part.strip()!='':
 							if line_i==1:
 								if j==1:
-									self.total_mem=int(part)
+									self.memory_total_mb=int(part)
 								if j==2:
-									self.used_mem=int(part)
+									self.memory_used_mb=int(part)
 							if line_i==2:
 								if j==1:
-									self.total_swap=int(part)
+									self.swap_total_mb=int(part)
 								if j==2:
-									self.used_swap=int(part)
+									self.swap_used_mb=int(part)
 							j+=1
 			line_i+=1
 
