@@ -2,7 +2,7 @@ import socket
 import urllib.request
 
 def get_url(url,_timeout=10):
-    return urllib.request.urlopen(url,timeout=_timeout).read()
+    return str(urllib.request.urlopen(url,timeout=_timeout).read())
 
 def get_socket(host,port,text):
     try:
