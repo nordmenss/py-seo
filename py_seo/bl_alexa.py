@@ -27,7 +27,7 @@ class Tbl_alexa(HTMLParser):
         while self.is_next==True:
             self.is_next=False
             request="http://www.alexa.com/site/linksin;"+str(step)+"/"+self.fqdn
-            self.html=get_page(request)
+            self.html=get_url(request)
             self.parse(self.html)
             step+=1
         return True

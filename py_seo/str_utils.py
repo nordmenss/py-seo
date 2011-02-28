@@ -1,5 +1,5 @@
 from urllib.parse import urlparse
-import urllib,datetime,traceback,time,dateutil.parser
+import datetime,traceback,time
 
 def is_finded(text,substring):
 	return text.find(substring,0)>=0
@@ -66,13 +66,6 @@ def explode(separator,string):
 
 def str_get_lines(value):
 	return explode("\n",value)
-
-def get_url(url):
-	try:
-		page=urllib.urlopen(url)
-		return page.read()
-	except:
-		return ''
 
 def get_scheme(href):
 	parse_object = urlparse(href)
