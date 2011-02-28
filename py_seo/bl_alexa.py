@@ -1,83 +1,33 @@
 import traceback
-from html.parser import HTMLParser
+from lxml.html import document_fromstring
 from py_seo.web_utils import *
 from py_seo.str_utils import *
 
 def data(fqdn,title):
     return [fqdn,title]
 
-class Tbl_alexa(HTMLParser):
+class Tbl_alexa():
     def __init__(self, fqdn):
-        HTMLParser.__init__(self)
+        self.page=None
         self.fqdn=fqdn
         self.links=[]
         self.total=0
         self.is_next=True
-        self.text = None
-        self.is_site_listing=False
-        self.link_url=None
-        self.link_title=None
-
-    def parse(self,html):
-        self.feed(html)
-        self.close()
 
     def get(self):
         step=0
         while self.is_next==True:
-            self.is_next=False
             request="http://www.alexa.com/site/linksin;"+str(step)+"/"+self.fqdn
             self.html=get_url(request)
-            self.parse(self.html)
+            self.page=document_fromstring(self.html)
+            for link in self.page.cssselect('a.title'):
+                href=link.get('href')
+                href=str_replace('/siteinfo/','',href)
+                content=link.text_content()
+                self.links.append(data(href,content))
+            self.is_next=(self.page.cssselect('a.next')!=[])
             step+=1
         return True
-
-    def handle_starttag(self, tag, attr):
-        try:
-            self.text = ''
-            if tag=="a":
-                self.start_a(attr)
-
-            if tag=="div":
-                self.start_div(attr)
-        except HTMLParseError:
-            print('error')
-
-    def handle_endtag(self,tag):
-        if tag=="div":
-            self.end_div()
-
-        if tag=="strong":
-            self.end_strong()
-
-    def handle_data(self, data):
-        self.text=data
-
-    def start_a(self, attrs):
-        if self.is_site_listing==True:
-            for key,value in attrs:
-                if key=="href":
-                    self.link_url=str_replace("/siteinfo/","",value)
-        else:
-            for key,value in attrs:
-                if key=="class":
-                    if value=="next":
-                        self.is_next=True
-
-
-    def end_strong(self):
-        if self.is_site_listing==True:
-            self.link_title=self.text
-
-    def start_div(self,attrs):
-        for key,value in attrs:
-            if value=="site-listing":
-                self.is_site_listing=True
-
-    def end_div(self):
-        if self.is_site_listing==True:
-            self.links.append(data(self.link_url,self.link_title))
-            self.is_site_listing=False
 
     def links(self):
         return self.links
