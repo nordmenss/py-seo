@@ -1,17 +1,15 @@
- from bl_alexa import *
-from bname_parser import *
+from py_seo.json_bing import *
 
-class Tbname_bl_bing(Tparser):
-    def __init__(self,domain):
-        Tparser.__init__(self,domain)
-        self.json=Tjson_bing("'"+self.url+"'%20-site:"+self.url)
+class Tbl_bing():
+    def __init__(self,fqdn):
+        self.json=Tjson_bing("'"+fqdn+"'%20-site:"+fqdn)
 
-    def get_sql(self):
-        values=[]
-        for link in self.json.get_links():
-            sql_value=self.get_sql("(%s,%s,%s,%s)",(link['url'],link['title'],link['description'],link['added'],))
-            values.append(sql_value)
-        sql="SELECT add_bls_bing("+str(self.domain_id)+",ARRAY["+implode(",",values)+"]::text_text_text_date[],"+str(self.json.get_total())+");"
-        return sql
+    def get(self):
+        return self.json.get()
 
+    def links(self):
+        return self.json.links()
+
+    def total(self):
+        return self.json.total()
 

@@ -1,8 +1,8 @@
-import sys, urllib2, socket
+import socket
+import urllib.request
 
-def get_page(url,timeout=5):
-    socket.setdefaulttimeout(timeout)
-    return urllib2.urlopen(url).read()
+def get_page(url,_timeout=10):
+    return urllib.request.urlopen(url).read(timeout=_timeout)
 
 def get_socket(host,port,text):
     try:
