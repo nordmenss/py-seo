@@ -93,12 +93,12 @@ def get_path(href):
 	return path
 
 
-def parse_date(str_value):
+def parse_date(str_value,format):
 	try:
-		d=dateutil.parser.parse(str_value)
-		return datetime.date(d.year,d.month,d.day)
+		t=time.strptime(str_value, format)
+		return datetime.date(d.tm_year,t.tm_mon,t.tm_mday)
 	except:
-		return get_date()
+		return None
 
 def is_valid_date(date_str):
 	try:
