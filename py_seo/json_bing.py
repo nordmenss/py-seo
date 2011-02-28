@@ -1,14 +1,9 @@
-import sys, urllib,urllib2,json,traceback
+import urllib,urllib2,json,traceback
 from web_utils import *
 from str_utils import *
 
-def Tlink(url,title,description,added):
-    link=dict()
-    link['url']=url
-    link['title']=title
-    link['description']=description
-    link['added']=added
-    return link
+def data(url,title,description,added):
+    return [url,title,description,]
 
 def key_or_null(params,key):
     if params.has_key(key)==True:
@@ -38,8 +33,8 @@ class Tjson_bing():
                     if step==0:
                         self.total=web['Total']
                     for r in results:
-                        self.link=Tlink(key_or_null(r,'Url'),key_or_null(r,'Title'),key_or_null(r,'Description'),str(parse_date(key_or_null(r,'DateTime'))))
-                        self.links.append(self.link)
+                        data=data(key_or_null(r,'Url'),key_or_null(r,'Title'),key_or_null(r,'Description'),str(parse_date(key_or_null(r,'DateTime'))))
+                        self.links.append(data)
                     step+=50
                     is_next=(step<self.limit)
                 else:
@@ -53,9 +48,9 @@ class Tjson_bing():
                 traceback.print_exc(file=sys.stdout)
         return True
 
-    def get_links(self):
+    def links(self):
         return self.links
 
-    def get_total(self):
+    def total(self):
         return self.total
 

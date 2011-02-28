@@ -1,16 +1,15 @@
-import sgmllib,traceback
-from web_utils import *
-from str_utils import *
+import traceback
+from html.parser import HTMLParser
+from py_seo.web_utils import *
+from py_seo.str_utils import *
 
-class Tlink():
-    def __init__(self, url,title):
-        self.url=url
-        self.title=title
+def data(fqdn,title):
+    return [fqdn,title]
 
-class Tbl_alexa(sgmllib.SGMLParser):
-    def __init__(self, url):
-        sgmllib.SGMLParser.__init__(self)
-        self.url=url
+class Tbl_alexa(HTMLParser):
+    def __init__(self, fqdn):
+        HTMLParser.__init__(self)
+        self.fqdn=fqdn
         self.links=[]
         self.total=0
         self.is_next=True
@@ -27,7 +26,7 @@ class Tbl_alexa(sgmllib.SGMLParser):
         step=0
         while self.is_next==True:
             self.is_next=False
-            request="http://www.alexa.com/site/linksin;"+str(step)+"/"+self.url
+            request="http://www.alexa.com/site/linksin;"+str(step)+"/"+self.fqdn
             self.html=get_page(request)
             self.parse(self.html)
             step+=1
@@ -48,7 +47,7 @@ class Tbl_alexa(sgmllib.SGMLParser):
 
     def end_div(self):
         if self.is_site_listing==True:
-            self.links.append(Tlink(self.link_url,self.link_title))
+            self.links.append(data(self.link_url,self.link_title))
             self.is_site_listing=False
 
     def start_a(self, attrs):
@@ -72,9 +71,9 @@ class Tbl_alexa(sgmllib.SGMLParser):
         if self.is_site_listing==True:
             self.link_title=self.text.strip()
 
-    def get_links(self):
+    def links(self):
         return self.links
 
-    def get_total(self):
+    def total(self):
         return self.total
 

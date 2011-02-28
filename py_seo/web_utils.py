@@ -1,6 +1,4 @@
 import sys, urllib2, socket
-sys.path.append('/usr/development/includes')
-from str_utils import *
 
 def get_page(url,timeout=5):
     socket.setdefaulttimeout(timeout)
