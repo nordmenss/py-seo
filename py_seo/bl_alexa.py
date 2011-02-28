@@ -32,23 +32,23 @@ class Tbl_alexa(HTMLParser):
             step+=1
         return True
 
-    def handle_starttag(self, tag, method, attrs):
+    def handle_starttag(self, tag, attr):
         self.text = ''
-        method.__call__(attrs)
+        if tag=="a":
+            self.start_a(attr)
+
+        if tag=="div":
+            self.start_div(attr)
+
+    def handle_endtag(self,tag):
+        if tag=="div":
+            self.end_div()
+
+        if tag=="strong":
+            self.end_strong()
 
     def handle_data(self, data):
-        if self.text!=None:
-              self.text+=data
-
-    def start_div(self, attrs):
-        for key,value in attrs:
-            if value=="site-listing":
-                self.is_site_listing=True
-
-    def end_div(self):
-        if self.is_site_listing==True:
-            self.links.append(data(self.link_url,self.link_title))
-            self.is_site_listing=False
+        self.text=data
 
     def start_a(self, attrs):
         if self.is_site_listing==True:
@@ -61,15 +61,20 @@ class Tbl_alexa(HTMLParser):
                     if value=="next":
                         self.is_next=True
 
-    def end_a(self):
-        pass
-
-    def start_strong(self, attrs):
-        pass
 
     def end_strong(self):
         if self.is_site_listing==True:
-            self.link_title=self.text.strip()
+            self.link_title=self.text
+
+    def start_div(self,attr):
+        for key,value in attrs:
+            if value=="site-listing":
+                self.is_site_listing=True
+
+    def end_div(self):
+        if self.is_site_listing==True:
+            self.links.append(data(self.link_url,self.link_title))
+            self.is_site_listing=False
 
     def links(self):
         return self.links
