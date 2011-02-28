@@ -66,7 +66,7 @@ class Tbl_alexa(HTMLParser):
         if self.is_site_listing==True:
             self.link_title=self.text
 
-    def start_div(self,attr):
+    def start_div(self,attrs):
         for key,value in attrs:
             if value=="site-listing":
                 self.is_site_listing=True
