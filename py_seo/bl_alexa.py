@@ -33,12 +33,15 @@ class Tbl_alexa(HTMLParser):
         return True
 
     def handle_starttag(self, tag, attr):
-        self.text = ''
-        if tag=="a":
-            self.start_a(attr)
+        try:
+            self.text = ''
+            if tag=="a":
+                self.start_a(attr)
 
-        if tag=="div":
-            self.start_div(attr)
+            if tag=="div":
+                self.start_div(attr)
+        except HTMLParseError:
+            print('error')
 
     def handle_endtag(self,tag):
         if tag=="div":
