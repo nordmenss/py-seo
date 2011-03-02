@@ -10,7 +10,7 @@ class Tbl_alexa():
     def __init__(self, fqdn):
         self.page=None
         self.fqdn=fqdn
-        self.links=[]
+        self.arr=[]
         self.total=0
         self.is_next=True
 
@@ -24,13 +24,13 @@ class Tbl_alexa():
                 href=link.get('href')
                 href=str_replace('/siteinfo/','',href)
                 content=link.text_content()
-                self.links.append(data(href,content))
+                self.arr.append(data(href,content))
             self.is_next=(self.page.cssselect('a.next')!=[])
             step+=1
         return True
 
-    def links(self):
-        return self.links
+    def data(self):
+        return self.arr
 
     def total(self):
         return self.total

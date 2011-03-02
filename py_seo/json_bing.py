@@ -14,7 +14,7 @@ def key_or_null(params,key):
 class Tjson_bing():
     def __init__(self, q):
         self.q=q
-        self.links=[]
+        self.arr=[]
         self.total=0
         self.limit=0
 
@@ -34,7 +34,7 @@ class Tjson_bing():
                         self.total=web['Total']
                     for r in results:
                         data=data(key_or_null(r,'Url'),key_or_null(r,'Title'),key_or_null(r,'Description'),str(parse_date(key_or_null(r,'DateTime'))))
-                        self.links.append(data)
+                        self.arr.append(data)
                     step+=50
                     is_next=(step<self.limit)
                 else:
@@ -49,7 +49,7 @@ class Tjson_bing():
         return True
 
     def links(self):
-        return self.links
+        return self.arr
 
     def total(self):
         return self.total

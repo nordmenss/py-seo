@@ -2,19 +2,14 @@ import json,sys,traceback,urllib,urllib2
 from web_utils import *
 from str_utils import *
 
-def Tlink(url,title,desc):
-    link=dict()
-    link['url']=url
-    link['title']=title
-    link['description']=desc
-    link['created']=None
-    return link
+def data(url,title,desc):
+    return [url,title,desc]
 
 class Tjson_google():
     def __init__(self,source,q):
         self.q=q
         self.source=source
-        self.links=[]
+        self.arr=[]
         self.total=0
 
     def get(self):
@@ -35,8 +30,8 @@ class Tjson_google():
                             cursor=responseData['cursor']
                             self.total=int(cursor['estimatedResultCount'])
                         for result in results:
-                            self.link=Tlink(result['unescapedUrl'],result['title'],result['content'])
-                            self.links.append(self.link)
+                            data=data(result['unescapedUrl'],result['title'],result['content'])
+                            self.arr.append(data)
                     step+=8
                     is_next=((step<self.total) and (step<60))
                 else:
@@ -62,9 +57,9 @@ class Tjson_google():
             traceback.print_exc(file=sys.stdout)
             return False
 
-    def get_links(self):
-        return self.links
+    def links(self):
+        return self.arr
 
-    def get_total(self):
+    def total(self):
         return self.total
 
